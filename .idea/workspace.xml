@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="491a99f0-4f05-4833-9b28-e657361575ae" name="默认的" comment="" />
+    <list default="true" id="491a99f0-4f05-4833-9b28-e657361575ae" name="默认的" comment="">
+      <change afterPath="$PROJECT_DIR$/Graph.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/g.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AdjList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AdjMatrix.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AdjSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Graph.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GraphDFS.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +22,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1gBHVsiBnqUH3VJixoWwuhLyOga" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -22,6 +34,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -90,6 +103,7 @@
       <workItem from="1598688052521" duration="4258000" />
       <workItem from="1598713657897" duration="1929000" />
       <workItem from="1599981054004" duration="403000" />
+      <workItem from="1600576875981" duration="812000" />
     </task>
     <servers />
   </component>
