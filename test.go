@@ -21,6 +21,14 @@ func main() {
 		))
 
 	r := gin.New()
+	r.Use(func(context *gin.Context) {
+		defer func() {
+			if e := recover(); e != nil {
+				context.JSON(400, gin.H{"message": e})
+			}
+		}()
+		context.Next()
+	})
 	r.Handle("GET", "/news/:id", func(context *gin.Context) {
 		// 新闻缓存，假设我们认为他的过期时间 = 15s
 		newsCache := lib.NewsCache()

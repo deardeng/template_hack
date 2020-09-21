@@ -11,7 +11,9 @@ var NewsCachePool *sync.Pool
 func init() {
 	NewsCachePool = &sync.Pool{
 		New: func() interface{} {
-			return dedis.NewSimpleCache(dedis.NewStringOperation(), time.Second*15, dedis.Serilizer_GOB) // 指定序列化方式json
+			return dedis.NewSimpleCache(dedis.NewStringOperation(), time.Second*15, dedis.Serilizer_GOB,
+				dedis.NewCrossPolicy("^news\\d{1,5}$"),
+			) // 指定序列化方式Gob
 		},
 	}
 }
