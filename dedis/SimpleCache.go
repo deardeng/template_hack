@@ -56,9 +56,12 @@ func (this *SimpleCache) GetCache(key string) (ret interface{}) {
 		this.Policy.Before(key)
 	}
 
-	obj := this.DBGetter()
 	if this.Serilizer == Serilizer_JSON {
 		f := func() string {
+			obj := this.DBGetter()
+			if obj == nil {
+				return ""
+			}
 			b, err := json.Marshal(obj)
 			if err != nil {
 				return ""
@@ -66,9 +69,12 @@ func (this *SimpleCache) GetCache(key string) (ret interface{}) {
 			return string(b)
 		}
 		ret = this.Operation.Get(key).Unwrap_Or_Else(f)
-		this.SetCache(key, ret)
 	} else if this.Serilizer == Serilizer_GOB {
 		f := func() string {
+			obj := this.DBGetter()
+			if obj == nil {
+				return ""
+			}
 			var buf = &bytes.Buffer{}
 			enc := gob.NewEncoder(buf)
 			if err := enc.Encode(obj); err != nil {
@@ -77,6 +83,12 @@ func (this *SimpleCache) GetCache(key string) (ret interface{}) {
 			return buf.String()
 		}
 		ret = this.Operation.Get(key).Unwrap_Or_Else(f)
+	}
+
+	if ret.(string) == "" && this.Policy != nil {
+		this.Policy.SetOperation(this.Operation)
+		this.Policy.IfNil(key, "")
+	} else {
 		this.SetCache(key, ret)
 	}
 	return
