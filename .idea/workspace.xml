@@ -40,7 +40,7 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Application.GraphDFS">
+  <component name="RunManager" selected="应用程序.AdjList">
     <configuration name="AdjList" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="AdjList" />
       <module name="Graph" />
@@ -76,13 +76,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="应用程序.AdjList" />
+      <item itemvalue="应用程序.AdjMatrix" />
+      <item itemvalue="应用程序.AdjSet" />
+      <item itemvalue="应用程序.Graph" />
+      <item itemvalue="应用程序.GraphDFS" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.GraphDFS" />
-        <item itemvalue="Application.Graph" />
-        <item itemvalue="Application.AdjSet" />
-        <item itemvalue="Application.AdjMatrix" />
-        <item itemvalue="Application.AdjList" />
+        <item itemvalue="应用程序.AdjList" />
       </list>
     </recent_temporary>
   </component>
