@@ -30,8 +30,11 @@ func main() {
 		newsID := context.Param("id")
 		newsCache.DBGetter = lib.NewDBGetter(newsID)
 
-		context.Header("Content-type", "application/json")
-		context.String(200, newsCache.GetCache("news"+newsID).(string))
+		//context.Header("Content-type", "application/json")
+		//context.String(200, newsCache.GetCache("news"+newsID).(string))
+		newsModel := lib.NewNewsModel()
+		newsCache.GetCacheForObject("news"+newsID, newsModel)
+		context.JSON(200, newsModel)
 	})
 	r.Run(":8080")
 }
