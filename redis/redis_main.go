@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"jiajun/dedis"
 	"jiajun/lib"
+	"jiajun/redis/dedis"
 	"log"
 	"time"
 )

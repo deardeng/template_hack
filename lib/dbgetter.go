@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"jiajun/dedis"
+	"jiajun/redis/dedis"
 	"log"
 )
 
