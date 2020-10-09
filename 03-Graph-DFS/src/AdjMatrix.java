@@ -86,7 +86,7 @@ public class AdjMatrix {
     }
 
     public static void main(String[] args){
-        AdjMatrix adjMatrix = new AdjMatrix("g.txt");
+        AdjMatrix adjMatrix = new AdjMatrix("03-Graph-DFS/g.txt");
         System.out.println(adjMatrix);
     }
 }

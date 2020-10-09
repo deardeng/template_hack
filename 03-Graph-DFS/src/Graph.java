@@ -1,15 +1,14 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.TreeSet;
 
-public class AdjSet {
+public class Graph {
     private int V;
     private int E;
     private TreeSet<Integer>[] adj;
 
-    public AdjSet(String filename){
+    public Graph(String filename){
         File file = new File(filename);
 
         try(Scanner scanner = new Scanner(file)){
@@ -88,7 +87,7 @@ public class AdjSet {
     }
 
     public static void main(String[] args){
-        AdjSet adjSet = new AdjSet("g.txt");
-        System.out.println(adjSet);
+        Graph graph = new Graph("03-Graph-DFS/g.txt");
+        System.out.println(graph);
     }
 }
