@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(gen reflect_static/main.cpp)
 add_executable(quick_sort quick_sort/main.cpp)
+add_executable(args args/main.cpp)
