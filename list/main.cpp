@@ -156,6 +156,20 @@ struct is_true<
 static const bool R = true;
 };
 
+template <template <typename> class _F, class _L>
+struct list_find_first_true;
+
+// list_find_first_true
+template <template <typename> class _F, typename _H, class _T>
+struct list_find_first_true<_F, Cons<_H, _T> > {
+  typedef TCAP(if_, CAP(_F, _H),
+               c_identity<_H>,
+               list_find_first_true<_F, _T>)::R R;
+};
+
+template <template <typename> class _F>
+struct list_find_first_true<_F, void> { typedef void R; };
+
 int main(){
     list_concat<void, char>::R c;
     c = 'a';
@@ -203,11 +217,11 @@ int main(){
     std::cout << "CAP(list_seek_first, double ,Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_seek_first, double ,Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
     std::cout << "CAP(list_seek_first, float ,Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_seek_first, float ,Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
 
-    std::cout << "trans type  CAP(list_find_first, int, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+    std::cout << "trans type CAP(list_find_first, int, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
         CAP(list_find_first, int, Cons<char, Cons<int, Cons<double, void>>>)
     >().pretty_name() << std::endl;
 
-    std::cout << "trans type  CAP(list_find_first, float, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+    std::cout << "trans type CAP(list_find_first, float, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
         CAP(list_find_first, float, Cons<char, Cons<int, Cons<double, void>>>)
     >().pretty_name() << std::endl;
 
@@ -219,4 +233,13 @@ int main(){
 
     std::cout << "CAP(list_seek_first_true, is_true, Cons<char, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) => "
               << CAP(list_seek_first_true, is_true, Cons<char, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) << std::endl;
+
+    std::cout << "trans type CAP(list_find_first_true, is_true, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_find_first_true, is_true, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<int, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type CAP(list_find_first_true, is_true, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_find_first_true, is_true, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
 }
