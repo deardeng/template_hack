@@ -170,6 +170,60 @@ struct list_find_first_true<_F, Cons<_H, _T> > {
 template <template <typename> class _F>
 struct list_find_first_true<_F, void> { typedef void R; };
 
+template <class _L> struct list_dup;
+
+// list_dup
+template <typename _H, class _T>
+struct list_dup<Cons<_H, _T> >
+{ enum { R = CAP(if_, (CAP(list_seek_first, _H, _T) >= 0),
+                 Int<true>,
+                 list_dup<_T>)::R }; };
+
+template <> struct list_dup<void> { enum { R = false }; };
+
+template <typename _Item, class _L> struct list_erase_first;
+
+// Implement list_erase_first
+template <typename _Item, typename _H, class _T>
+class list_erase_first<_Item, Cons<_H, _T> > {
+  struct go_on {
+    typedef Cons<_H, TCAP(list_erase_first, _Item, _T)> R;
+  };
+
+ public:
+  typedef TCAP(if_, CAP(c_same, _Item, _H), c_identity<_T>, go_on)::R R;
+};
+
+template <typename _Item> struct list_erase_first<_Item, void>
+{ typedef void R; };
+
+template <typename _C1, typename _C2> struct Pair {
+  typedef _C1 First;
+  typedef _C2 Second;
+};
+
+template <template <typename> class _F, class _L>
+struct list_erase_first_true;
+
+// list_erase_first_true
+template <template <typename> class _F, typename _H, class _T>
+class list_erase_first_true<_F, Cons<_H, _T> > {
+  struct case_false {
+    typedef TCAP(list_erase_first_true, _F, _T) P;
+    typedef Pair<typename P::First, Cons<_H, typename P::Second> > R;
+  };
+
+ public:
+  typedef TCAP(if_, CAP(_F, _H),
+               c_identity<Pair<_H, _T> >,
+               case_false)::R R;
+};
+
+template <template <typename> class _F>
+struct list_erase_first_true<_F, void>
+{ typedef Pair<void, void> R; };
+
+
 int main(){
     list_concat<void, char>::R c;
     c = 'a';
@@ -242,4 +296,26 @@ int main(){
         CAP(list_find_first_true, is_true, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>)
     >().pretty_name() << std::endl;
 
+    std::cout << "CAP(list_dup, Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_dup, Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
+    std::cout << "CAP(list_dup, Cons<double, Cons<int, Cons<double, void>>>) => " << CAP(list_dup, Cons<double, Cons<int, Cons<double, void>>>) << std::endl;
+
+    std::cout << "trans type CAP(list_erase_first, int, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_erase_first, int, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type CAP(list_erase_first, float, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_erase_first, float, Cons<int, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type CAP(list_erase_first_true, is_true, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_erase_first_true, is_true, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<int, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type CAP(list_erase_first_true, is_true, Cons<float, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_erase_first_true, is_true, Cons<float, Cons<int, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type CAP(list_erase_first_true, is_true, Cons<int, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_erase_first_true, is_true, Cons<int, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
 }
