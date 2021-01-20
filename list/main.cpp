@@ -70,6 +70,46 @@ template <typename _H, class _T>
 struct list_at <0, Cons<_H, _T> >
 { typedef _H R; };
 
+template <int _N> struct Int { static const int R = _N; };
+
+template <typename _T1, typename _T2> struct c_same;
+
+template <typename _T> struct c_same <_T, _T>
+{ static const bool R = true; };
+
+template <typename _T1, typename _T2> struct c_same
+{ static const bool R = false; };
+
+template <bool _Condition, typename _Then, typename _Else> struct if_;
+
+// if_
+template <typename _Then, typename _Else> struct if_<false, _Then, _Else>
+{ typedef _Else R; };
+
+template <bool _Cond, typename _Then, typename _Else> struct if_
+{ typedef _Then R; };
+
+template <typename _Item, class _L> struct list_seek_first;
+
+template <typename _Item, typename _H, class _T>
+class list_seek_first<_Item, Cons<_H, _T> > {
+  // if _idx is -1, returns -1; otherwise returns 1+_idx
+  struct case_false
+  {
+    enum {
+      R_ = CAP(list_seek_first, _Item, _T),
+      R = (R_ < 0) ? -1 : (1 + R_)
+    };
+  };
+
+ public:
+  const static int R = CAP(if_, CAP(c_same, _Item, _H), Int<0>, case_false)::R;
+};
+
+template <typename _Item> struct list_seek_first<_Item, void>
+{ enum { R = -1 }; };
+
+
 int main(){
     list_concat<void, char>::R c;
     c = 'a';
@@ -112,4 +152,9 @@ int main(){
     std::cout << "trans type CAP(list_at, 999, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
         CAP(list_at, 999, Cons<char, Cons<int, Cons<double, void>>>)
     >().pretty_name() << std::endl;
+
+//    std::cout << list_seek_first<double ,Cons<char, Cons<int, Cons<double, void>>>>::R << std::endl;
+    std::cout << "CAP(list_seek_first, double ,Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_seek_first, double ,Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
+    std::cout << "CAP(list_seek_first, float ,Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_seek_first, float ,Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
+
 }
