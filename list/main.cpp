@@ -109,6 +109,52 @@ class list_seek_first<_Item, Cons<_H, _T> > {
 template <typename _Item> struct list_seek_first<_Item, void>
 { enum { R = -1 }; };
 
+template <typename _Item, class _L> struct list_find_first;
+
+// list_find_first
+template <typename _Item, typename _H, class _T>
+struct list_find_first<_Item, Cons<_H, _T> > {
+  typedef TCAP(if_, CAP(c_same, _Item, _H),
+               c_identity<_H>,
+               list_find_first<_Item, _T>)::R R;
+};
+
+template <typename _Item>
+struct list_find_first<_Item, void> { typedef void R; };
+
+template <template <typename> class _F, class _L>
+struct list_seek_first_true;
+
+// implement list_seek_first_true
+template <template <typename> class _F, typename _H, class _T>
+class list_seek_first_true<_F, Cons<_H, _T> > {
+  // if _idx is -1, returns -1; otherwise returns 1+_idx
+  struct case_false
+  { enum { R_ = CAP(list_seek_first_true, _F, _T),
+      R = (R_ < 0) ? -1 : (1 + R_) }; };
+
+ public:
+  const static int R = CAP(if_, CAP(_F, _H), Int<0>, case_false)::R;
+};
+
+template <template <typename> class _F> struct list_seek_first_true<_F, void>
+{ enum { R = -1 }; };
+
+template <class _T, class _H, class _C,
+    int _M, bool _R>
+class UniqueCheckIndex{};
+
+template <typename _Index> struct is_true {
+  static const bool R = false;
+};
+
+template <class _T, class _H, class _C,
+    int _M, bool _R>
+struct is_true<
+    UniqueCheckIndex<_T, _H, _C,
+                     _M, _R> > {
+static const bool R = true;
+};
 
 int main(){
     list_concat<void, char>::R c;
@@ -157,4 +203,20 @@ int main(){
     std::cout << "CAP(list_seek_first, double ,Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_seek_first, double ,Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
     std::cout << "CAP(list_seek_first, float ,Cons<char, Cons<int, Cons<double, void>>>) => " << CAP(list_seek_first, float ,Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
 
+    std::cout << "trans type  CAP(list_find_first, int, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_find_first, int, Cons<char, Cons<int, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type  CAP(list_find_first, float, Cons<char, Cons<int, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_find_first, float, Cons<char, Cons<int, Cons<double, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "CAP(list_seek_first_true, is_true, Cons<char, Cons<int, Cons<double, void>>>) => "
+              << CAP(list_seek_first_true, is_true, Cons<char, Cons<int, Cons<double, void>>>) << std::endl;
+
+    std::cout << "CAP(list_seek_first_true, is_true, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) => "
+              << CAP(list_seek_first_true, is_true, Cons<UniqueCheckIndex<char, double, float, 3, false>, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) << std::endl;
+
+    std::cout << "CAP(list_seek_first_true, is_true, Cons<char, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) => "
+              << CAP(list_seek_first_true, is_true, Cons<char, Cons<UniqueCheckIndex<char, double, float, 5, true>, Cons<double, void>>>) << std::endl;
 }
