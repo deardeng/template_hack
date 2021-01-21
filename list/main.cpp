@@ -309,6 +309,35 @@ class list_partition<_F, Cons<_H, _T> > {
 template <template <typename> class _F>
 struct list_partition<_F, void> { typedef Pair<void, void> R; };
 
+template <typename _Any> struct c_not_void;
+
+// c_not_void
+template <> struct c_not_void<void> { enum { R = false }; };
+template <typename _Any> struct c_not_void { enum { R = true }; };
+
+template <typename _A0,        typename _A1  = void, typename _A2  = void,
+    typename _A3  = void, typename _A4  = void, typename _A5  = void,
+    typename _A6  = void, typename _A7  = void, typename _A8  = void,
+    typename _A9  = void, typename _A10 = void, typename _A11 = void,
+    typename _A12 = void, typename _A13 = void, typename _A14 = void,
+    typename _A15 = void, typename _A16 = void, typename _A17 = void>
+struct make_non_void_list;
+
+// Implement make_non_void_list
+template <typename _A0,  typename _A1,  typename _A2,
+    typename _A3,  typename _A4,  typename _A5,
+    typename _A6,  typename _A7,  typename _A8,
+    typename _A9,  typename _A10, typename _A11,
+    typename _A12, typename _A13, typename _A14,
+    typename _A15, typename _A16, typename _A17>
+struct make_non_void_list {
+  typedef TCAP(list_filter, c_not_void,
+               Cons<_A0, Cons<_A1, Cons<_A2, Cons<_A3, Cons<_A4,
+                                                            Cons<_A5, Cons<_A6, Cons<_A7, Cons<_A8, Cons<_A9,
+                                                                                                         Cons<_A10, Cons<_A11, Cons<_A12, Cons<_A13, Cons<_A14,
+                                                                                                                                                          Cons<_A15, Cons<_A16, Cons<_A17,
+                   void> > > > > > > > > > > > > > > > > >) R;
+};
 
 int main(){
     list_concat<void, char>::R c;
@@ -452,5 +481,13 @@ int main(){
 
     std::cout << "trans type         CAP(list_partition, is_true, Cons<int, Cons<char, Cons<UniqueCheckIndex<char, double, float, 3, false>, void>>>) => " << boost::typeindex::type_id_with_cvr<
         CAP(list_partition, is_true, Cons<int, Cons<char, Cons<UniqueCheckIndex<char, double, float, 3, false>, void>>>)
+    >().pretty_name() << std::endl;
+
+    std::cout << "CAP(make_non_void_list, int, char) => " << boost::typeindex::type_id_with_cvr<
+        CAP(make_non_void_list, int, char)
+    >().pretty_name() << std::endl;
+
+    std::cout << "CAP(make_non_void_list, int, char, void, float) => " << boost::typeindex::type_id_with_cvr<
+        CAP(make_non_void_list, int, char, void, float)
     >().pretty_name() << std::endl;
 }
