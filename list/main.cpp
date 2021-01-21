@@ -339,6 +339,24 @@ struct make_non_void_list {
                    void> > > > > > > > > > > > > > > > > >) R;
 };
 
+template <template <typename, typename> class _F, typename _Init, class _L>
+struct list_foldl;
+
+// list_foldl
+template <template <typename, typename> class _F,
+    typename _Init, typename _H, class _T>
+struct list_foldl<_F, _Init, Cons<_H, _T> >
+{ typedef TCAP(list_foldl, _F, TCAP(_F, _Init, _H), _T) R; };
+
+template <template <typename, typename> class _F, typename _Init>
+struct list_foldl<_F, _Init, void> { typedef _Init R; };
+
+
+template <typename _H, typename _L> struct gen_foo{
+  typedef Cons<_H, _L> R;
+};
+
+
 int main(){
     list_concat<void, char>::R c;
     c = 'a';
@@ -479,7 +497,7 @@ int main(){
         CAP(list_filter_map, c_identity, Cons<void, Cons<void, Cons<UniqueCheckIndex<char, double, float, 3, false>, void>>>)
     >().pretty_name() << std::endl;
 
-    std::cout << "trans type         CAP(list_partition, is_true, Cons<int, Cons<char, Cons<UniqueCheckIndex<char, double, float, 3, false>, void>>>) => " << boost::typeindex::type_id_with_cvr<
+    std::cout << "trans type CAP(list_partition, is_true, Cons<int, Cons<char, Cons<UniqueCheckIndex<char, double, float, 3, false>, void>>>) => " << boost::typeindex::type_id_with_cvr<
         CAP(list_partition, is_true, Cons<int, Cons<char, Cons<UniqueCheckIndex<char, double, float, 3, false>, void>>>)
     >().pretty_name() << std::endl;
 
@@ -489,5 +507,9 @@ int main(){
 
     std::cout << "CAP(make_non_void_list, int, char, void, float) => " << boost::typeindex::type_id_with_cvr<
         CAP(make_non_void_list, int, char, void, float)
+    >().pretty_name() << std::endl;
+
+    std::cout << "trans type CAP(list_foldl, gen_foo, int, Cons<float, Cons<char, Cons<double, void>>>) => " << boost::typeindex::type_id_with_cvr<
+        CAP(list_foldl, gen_foo, int, Cons<float, Cons<char, Cons<double, void>>>)
     >().pretty_name() << std::endl;
 }
